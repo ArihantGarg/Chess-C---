@@ -44,14 +44,14 @@ void displayBoard() // Improve piece display
 
 bool checkKing(bool type) /*Later when deciding result, for now checks if king is present*/
 {
-    char kingType = (type ? 'w' : 'b');
+    string kingType = (type ? "b" : "w");
 
     for(int i=0;i<8;i++)
         for(int j=0;j<8;j++)
             if(board[i][j]==kingType+"King")
-                return 0; 
+                return 1; 
 
-    return 1;
+    return 0;
 }
 
 
@@ -128,7 +128,7 @@ bool checkVertical(pair<int,int> prev,pair<int,int> next)
     if(board[prev.first][prev.second]=="wRook" || board[prev.first][prev.second]=="bRook")
         return 1;
 
-    if( ( board[prev.first][prev.second]=="wPawn" && (prev.first-next.first==1 || (prev.first==6 && prev.first-next.first==2)) ) || ( board[prev.first][prev.second]=="bPawn" && (next.first-prev.first==1 || (prev.first==1 && next.first-prev.first==2)) ) )
+    if(board[next.first][next.second]=="empty" && ( ( board[prev.first][prev.second]=="wPawn" && (prev.first-next.first==1 || (prev.first==6 && prev.first-next.first==2)) ) || ( board[prev.first][prev.second]=="bPawn" && (next.first-prev.first==1 || (prev.first==1 && next.first-prev.first==2))) ) )
         return 1;
 
     return 0;
@@ -189,7 +189,7 @@ void addPossibleMove(pair<int,int> prev,pair<int,int> next)
     s2=findString(next);
 
     pos.insert({s1,s2});
-    cout<<s1<<" , "<<s2<<"\n";
+    //cout<<s1<<" , "<<s2<<"\n";
 }
 
 void possibleMoves3(bool currentMove,pair<int,int> prev,pair<int,int> next) // King not in check after move,castle move
@@ -246,7 +246,7 @@ void makeMove(string s1,string s2,bool currentMove) // En passant edge case, Cas
 
 bool gameEnd(bool currentMove)
 {
-    if(checkKing(currentMove))
+    if(checkKing(currentMove)==0)
         return 1;
 
     possibleMoves(currentMove);
@@ -262,18 +262,16 @@ void gameEndMessage(bool currentMove)
         return;
     }
     
-    if(checkKing(0) && checkKing(1))
-    {
-        cout<<"Error, both kings in check";
-        return;
-    }
-
-    if(checkKing(0))
-        cout<<"Black won";
-    else if(checkKing(1))
-        cout<<"White won";
-    else
+    if(checkKing(0) && checkKing(1) && pos.size()>0)
+        cout<<"Error, neither king present";
+    else if(checkKing(0) && checkKing(1) && pos.size()==0)
         cout<<"Draw by stalemate";
+    else if(checkKing(0))
+        cout<<"White won";
+    else if(checkKing(1))
+        cout<<"Black won";
+    else
+        cout<<"ERROR";
 }
 
 int main()
