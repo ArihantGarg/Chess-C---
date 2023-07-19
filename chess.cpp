@@ -42,11 +42,16 @@ void displayBoard() // Improve piece display
     cout<<"\n\n";
 }
 
-bool checkKing(bool type) // Later when deciding result
+bool checkKing(bool type) /*Later when deciding result, for now checks if king is present*/
 {
     char kingType = (type ? 'w' : 'b');
 
-    return 0;
+    for(int i=0;i<8;i++)
+        for(int j=0;j<8;j++)
+            if(board[i][j]==kingType+"King")
+                return 0; 
+
+    return 1;
 }
 
 
@@ -241,6 +246,9 @@ void makeMove(string s1,string s2,bool currentMove) // En passant edge case, Cas
 
 bool gameEnd(bool currentMove)
 {
+    if(checkKing(currentMove))
+        return 1;
+
     possibleMoves(currentMove);
 
     return (pos.size() ? 0 : 1 );
