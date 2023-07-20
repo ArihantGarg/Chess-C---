@@ -1,0 +1,19 @@
+Conditions :-
+
+1. White 
+
+    wPawn on 3rd x-coordinate
+    prev move was bPawn to 3rd x-coordinate and absolute diff of y-coordinate is 1
+
+
+
+
+
+
+
+
+
+2. Black
+
+    bPawn on 4th x-coordinate
+    prev move was wPawn to 4th x-coordinate and absolute diff of y-coordinate is 1

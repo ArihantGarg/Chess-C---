@@ -1,0 +1,26 @@
+1. Short Side Castling
+
+e1 g1 (White)
+
+Conditions:-
+    e1 f1 is Valid(exists in set)
+    checkKing(0)==0 (king is not in check)
+king will not be in check at g1(is already checked by checkDiscoveredCheck)
+    king has not moved (keep global king variable,which changes in int main when we see king not in orginal square after a move)
+    right rook has not moved (same as above)
+    f1 is empty
+
+
+2.Long Side Castling
+
+e1 c1 (White)
+
+Conditions :- 
+    e1 d1 is Valid(exists in set)
+    checkKing(0)==0 (king is not in check)
+king will not be in check at c1(is already checked by checkDiscoveredCheck)
+    king has not moved (keep global king variable,which changes in int main when we see king not in orginal square after a move)
+    left rook has not moved (same as above)
+    d1 is empty
+    b1 is empty (NEW!!)
+

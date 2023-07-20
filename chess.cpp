@@ -326,6 +326,9 @@ int main()
         string s1,s2;
         cin>>s1>>s2;
 
+        if(checkKing(currentMove,board))
+            cout<<"\nYou are in check\n";
+
         // string s;
         // cin>>s;
         // s1=s.substr(0,2);
