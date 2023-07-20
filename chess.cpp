@@ -1,6 +1,11 @@
 #include<bits/stdc++.h>
 using namespace std;
 
+#include<io.h>
+#include<fcntl.h>
+
+#define cout wcout
+
 set<pair<string,string>> pos; /* Set of possible moves */
 
 string board[8][8];
@@ -35,7 +40,36 @@ void displayBoard() // Improve piece display
     for(int i=0;i<8;i++)
     {
         for(int j=0;j<8;j++)
-            cout<<board[i][j]<<"  ";
+        {
+            if(board[i][j]=="empty")
+                cout<<" ";
+            else if(board[i][j]=="bPawn")
+                wcout<<L"\u2659";
+            else if(board[i][j]=="bRook")
+                cout<<L"\u2656";
+            else if(board[i][j]=="bKnight")
+                cout<<L"\u2658";
+            else if(board[i][j]=="bBishop")
+                cout<<L"\u2657";
+            else if(board[i][j]=="bQueen")
+                cout<<L"\u2655";
+            else if(board[i][j]=="bKing")
+                cout<<L"\u2654";
+            else if(board[i][j]=="wPawn")
+                cout<<L"\u265F";
+            else if(board[i][j]=="wRook")
+                cout<<L"\u265C";
+            else if(board[i][j]=="wKnight")
+                cout<<L"\u265E";
+            else if(board[i][j]=="wBishop")
+                cout<<L"\u265D";
+            else if(board[i][j]=="wQueen")
+                cout<<L"\u265B";
+            else if(board[i][j]=="wKing")
+                cout<<L"\u265A";
+
+            cout<<" ";
+        }
         cout<<"\n";
     }
 
@@ -316,6 +350,7 @@ void gameEndMessage(bool currentMove)
 
 int main()
 {
+    _setmode(_fileno(stdout), _O_U16TEXT);
     bool currentMove=0; /* 0 for white, 1 for black */
     setUpChessBoard();
 
