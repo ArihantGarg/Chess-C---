@@ -42,7 +42,7 @@ void displayBoard() // Improve piece display
     cout<<"\n\n";
 }
 
-void makeMove(string s1,string s2,bool currentMove, string presentBoard[][8]) // En passant edge case, Castle edge case
+void makeMove(string s1,string s2,bool currentMove, string presentBoard[][8]) // En passant edge case, Castle edge case, promotion is auto queen
 {
     pair<int,int> prev,next;
 
@@ -51,6 +51,14 @@ void makeMove(string s1,string s2,bool currentMove, string presentBoard[][8]) //
 
     presentBoard[next.first][next.second]=presentBoard[prev.first][prev.second];
     presentBoard[prev.first][prev.second]="empty";
+
+    //Promotion (Auto Queen)
+
+    if(presentBoard[next.first][next.second]=="bPawn" && next.first==7)
+        presentBoard[next.first][next.second]="bQueen";
+        
+    if(presentBoard[next.first][next.second]=="wPawn" && next.first==0)
+        presentBoard[next.first][next.second]="wQueen";
 }
 
 bool checkBetween(pair<int,int> prev,pair<int,int> next, string presentBoard[][8])
@@ -308,7 +316,7 @@ void gameEndMessage(bool currentMove)
 
 int main()
 {
-    bool currentMove=0; /* 0 for white, 1 for black*/
+    bool currentMove=0; /* 0 for white, 1 for black */
     setUpChessBoard();
 
     while(!gameEnd(currentMove))
@@ -317,6 +325,11 @@ int main()
         displayBoard();
         string s1,s2;
         cin>>s1>>s2;
+
+        // string s;
+        // cin>>s;
+        // s1=s.substr(0,2);
+        // s2=s.substr(2,2);
         
         while(!checkValidMove(s1,s2))
         {

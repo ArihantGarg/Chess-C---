@@ -16,4 +16,4 @@ knight - {knight}
 
 en passant move (and capture) not possible
 castle move not possible
-promotion not possible
+promotion -> Auto Queen for now
