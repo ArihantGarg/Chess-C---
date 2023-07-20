@@ -7,3 +7,9 @@ f6 e5
 d1 h5
 e8 f7
 h5 f7
+
+
+e2 e4
+e7 e5
+d1 h5
+f7 f6
