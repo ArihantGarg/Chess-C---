@@ -381,15 +381,13 @@ void gameEndMessage(bool currentMove)
 
 int main()
 {
-    _setmode(_fileno(stdout), _O_U16TEXT);
+    _setmode(_fileno(stdout), _O_U16TEXT); // To display unicode(chess pieces)
     bool currentMove=0; /* 0 for white, 1 for black */
     setUpChessBoard();
 
     while(!gameEnd(currentMove))
     {
         cout<<"\n";
-
-        cout<<wEnpassant<<" "<<bEnpassant<<"\n";
 
         displayBoard();
         string s1,s2;
