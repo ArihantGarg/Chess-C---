@@ -23,3 +23,19 @@ b8 a6
 d6 e7
 a6 b8
 e7 d8
+
+
+// En passant discovered check
+
+e2 e4
+e7 e5
+d2 d4
+e5 d4
+e4 e5
+d8 e7
+g1 f3
+d7 d5
+
+a6 b8
+b8 a6
+a6 b8

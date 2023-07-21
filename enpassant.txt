@@ -7,7 +7,7 @@ Conditions :-
 
 
 
-
+wEnpassant -> -1 by default,changes to column number on 2 step white pawn move  
 
 
 

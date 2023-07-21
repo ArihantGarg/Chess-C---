@@ -8,6 +8,9 @@ using namespace std;
 
 set<pair<string,string>> pos; /* Set of possible moves */
 
+int wEnpassant=-1;
+int bEnpassant=-1;
+
 string board[8][8];
 
 void setUpChessBoard()
@@ -76,7 +79,7 @@ void displayBoard() // Improve piece display
     cout<<"\n\n";
 }
 
-void makeMove(string s1,string s2,bool currentMove, string presentBoard[][8]) // En passant edge case, Castle edge case, promotion is auto queen
+void makeMove(string s1,string s2,bool currentMove, string presentBoard[][8],bool real) // En passant edge case, Castle edge case, promotion is auto queen
 {
     pair<int,int> prev,next;
 
@@ -93,6 +96,26 @@ void makeMove(string s1,string s2,bool currentMove, string presentBoard[][8]) //
         
     if(presentBoard[next.first][next.second]=="wPawn" && next.first==0)
         presentBoard[next.first][next.second]="wQueen";
+
+    // En passant
+
+    if(wEnpassant!=-1 && presentBoard[next.first][next.second]=="bPawn" && prev.first==4 && abs(next.first-prev.first)==abs(next.second-prev.second) && next.second==wEnpassant)
+        presentBoard[prev.first][next.second]="empty";
+
+    if(bEnpassant!=-1 && presentBoard[next.first][next.second]=="wPawn" && prev.first==3 && abs(next.first-prev.first)==abs(next.second-prev.second) && next.second==bEnpassant)
+        presentBoard[prev.first][next.second]="empty";
+
+    // Next move en Passant possible
+
+    if(real && presentBoard[next.first][next.second]=="wPawn" && prev.first-next.first==2)
+        wEnpassant=next.second;
+    else if(real)
+        wEnpassant=-1;
+
+    if(real && presentBoard[next.first][next.second]=="bPawn" && next.first-prev.first==2)
+        bEnpassant=next.second;
+    else if(real)
+        bEnpassant=-1;
 }
 
 bool checkBetween(pair<int,int> prev,pair<int,int> next, string presentBoard[][8])
@@ -191,6 +214,14 @@ bool checkDiagonal(pair<int,int> prev,pair<int,int> next, string presentBoard[][
     if( (presentBoard[prev.first][prev.second]=="wPawn" && prev.first-next.first==1 && presentBoard[next.first][next.second][0]=='b') || (presentBoard[prev.first][prev.second]=="bPawn" && next.first-prev.first==1 && presentBoard[next.first][next.second][0]=='w') )
         return 1;
 
+    // En Passant
+
+    if(presentBoard[prev.first][prev.second]=="wPawn" && prev.first==3 && next.first==2 && bEnpassant==next.second)
+        return 1;
+
+    if(presentBoard[prev.first][prev.second]=="bPawn" && prev.first==4 && next.first==5 && wEnpassant==next.second)
+        return 1;
+
     return 0;
 }
 
@@ -271,7 +302,7 @@ bool checkDiscoveredCheck(bool currentMove , pair<int,int> prev , pair<int,int> 
     s1=findString(prev);
     s2=findString(next);
 
-    makeMove(s1,s2, currentMove , currBoard );
+    makeMove(s1,s2, currentMove , currBoard , 0);
 
     if(checkKing(currentMove,currBoard))
         return 1;
@@ -357,6 +388,9 @@ int main()
     while(!gameEnd(currentMove))
     {
         cout<<"\n";
+
+        cout<<wEnpassant<<" "<<bEnpassant<<"\n";
+
         displayBoard();
         string s1,s2;
         cin>>s1>>s2;
@@ -375,7 +409,7 @@ int main()
             cin>>s1>>s2;
         }
 
-        makeMove(s1,s2,currentMove,board);
+        makeMove(s1,s2,currentMove,board,1);
 
         currentMove=!currentMove;
         pos.clear();
