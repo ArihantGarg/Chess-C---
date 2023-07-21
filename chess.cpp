@@ -80,7 +80,7 @@ void displayBoard() // Improve board display
     cout<<"\n\n";
 }
 
-void makeMove(string s1,string s2,bool currentMove, string presentBoard[][8],bool real) // Castle edge case, Promotion is auto queen
+void makeMove(string s1,string s2,bool currentMove, string presentBoard[][8],bool real) // Promotion is auto queen
 {
     pair<int,int> prev,next;
 
@@ -118,9 +118,28 @@ void makeMove(string s1,string s2,bool currentMove, string presentBoard[][8],boo
     else if(real)
         bEnpassant=-1;
 
-    // Castle
-
     // Next move castle possible
+
+    if(real)
+    {
+        if(presentBoard[7][4]!="wKing")
+            wKingMoved=1;
+
+        if(presentBoard[7][0]!="bRook")
+            wLeftRookMoved=1;
+
+        if(presentBoard[7][7]!="wRook")
+            wRightRookMoved=1;
+
+        if(presentBoard[0][4]!="bKing")
+            bKingMoved=1;
+
+        if(presentBoard[0][0]!="bRook")
+            bLeftRookMoved=1;
+
+        if(presentBoard[0][7]!="bRook")
+            bRightRookMoved=1;
+    }
 }
 
 bool checkBetween(pair<int,int> prev,pair<int,int> next, string presentBoard[][8])
@@ -322,7 +341,7 @@ void possibleMoves3(bool currentMove,pair<int,int> prev,pair<int,int> next)
             addPossibleMove(prev,next);
 }
 
-void possibleMoves2(char type,bool currentMove,pair<int,int> prev) 
+void possibleMoves2(char type,bool currentMove,pair<int,int> prev)
 {
     for(int i=0;i<8;i++)
     {
@@ -336,7 +355,7 @@ void possibleMoves2(char type,bool currentMove,pair<int,int> prev)
     }
 }
 
-void possibleMoves(bool currentMove) // Castle
+void possibleMoves(bool currentMove)
 {
     char type = (currentMove ? 'b' : 'w');
 
@@ -353,7 +372,97 @@ void possibleMoves(bool currentMove) // Castle
 
     // Short Side Castle
 
+    if(wKingMoved==0 && wRightRookMoved==0)
+    {
+        if(pos.count({"e1","f1"}) && checkKing(0,board)==0)
+        {
+            if(board[7][5]=="empty" && board[7][6]=="empty")
+            {
+                if(checkDiscoveredCheck(currentMove,{7,4},{7,6})==0)
+                    addPossibleMove({7,4},{7,6});
+            }
+        }
+    }
 
+    if(bKingMoved==0 && bRightRookMoved==0)
+    {
+        if(pos.count({"e8","f8"}) && checkKing(1,board)==0)
+        {
+            if(board[0][5]=="empty" && board[0][6]=="empty")
+            {
+                if(checkDiscoveredCheck(currentMove,{0,4},{0,6})==0)
+                    addPossibleMove({0,4},{0,6});
+            }
+        }
+    }
+
+    // Long Side Castle
+
+    if(wKingMoved==0 && wLeftRookMoved==0)
+    {
+        if(pos.count({"e1","d1"}) && checkKing(0,board)==0)
+        {
+            if(board[7][3]=="empty" && board[7][2]=="empty" && board[7][1]=="empty")
+            {
+                if(checkDiscoveredCheck(currentMove,{7,4},{7,2})==0)
+                    addPossibleMove({7,4},{7,2});
+            }
+        }
+    }
+
+    if(bKingMoved==0 && bLeftRookMoved==0)
+    {
+        if(pos.count({"e8","d8"}) && checkKing(1,board)==0)
+        {
+            if(board[0][3]=="empty" && board[0][2]=="empty" && board[0][1]=="empty")
+            {
+                if(checkDiscoveredCheck(currentMove,{0,4},{0,2})==0)
+                    addPossibleMove({0,4},{0,2});
+            }
+        }
+    }
+}
+
+void checkCastle(string s1,string s2)
+{
+    if(s1=="e1")
+    {
+        if(s2=="g1")
+        {
+            if(board[7][6]=="wKing")
+            {
+                board[7][5]="wRook";
+                board[7][7]="empty";
+            }
+        }
+        else if(s2=="c1")
+        {
+            if(board[7][2]=="wKing")
+            {
+                board[7][3]="wRook";
+                board[7][0]="empty";
+            }
+        }
+    }
+    else if(s1=="e8")
+    {
+        if(s2=="g8")
+        {
+            if(board[0][6]=="bKing")
+            {
+                board[0][5]="bRook";
+                board[0][7]="empty";
+            }
+        }
+        else if(s2=="c8")
+        {
+            if(board[0][2]=="bKing")
+            {
+                board[0][3]="bRook";
+                board[0][0]="empty";
+            }
+        }
+    }
 }
 
 bool checkValidMove(string s1,string s2)
@@ -417,6 +526,8 @@ int main()
         }
 
         makeMove(s1,s2,currentMove,board,1);
+        checkCastle(s1,s2);
+
 
         currentMove=!currentMove;
         pos.clear();

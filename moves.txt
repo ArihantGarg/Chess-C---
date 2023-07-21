@@ -39,3 +39,14 @@ d7 d5
 a6 b8
 b8 a6
 a6 b8
+
+
+// Castle
+
+e2 e4
+e7 e5
+g1 f3
+g8 f6
+f1 c4
+b8 c6
+e1 g1
