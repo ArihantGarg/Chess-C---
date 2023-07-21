@@ -125,7 +125,7 @@ void makeMove(string s1,string s2,bool currentMove, string presentBoard[][8],boo
         if(presentBoard[7][4]!="wKing")
             wKingMoved=1;
 
-        if(presentBoard[7][0]!="bRook")
+        if(presentBoard[7][0]!="wRook")
             wLeftRookMoved=1;
 
         if(presentBoard[7][7]!="wRook")
@@ -508,11 +508,12 @@ int main()
         cout<<"\n";
 
         displayBoard();
-        string s1,s2;
-        cin>>s1>>s2;
 
         if(checkKing(currentMove,board))
-            cout<<"\nYou are in check\n";
+            cout<<"\n\nYou are in check\n\n";
+
+        string s1,s2;
+        cin>>s1>>s2;
 
         // string s;
         // cin>>s;
