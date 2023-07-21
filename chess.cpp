@@ -8,8 +8,9 @@ using namespace std;
 
 set<pair<string,string>> pos; /* Set of possible moves */
 
-int wEnpassant=-1;
-int bEnpassant=-1;
+int wEnpassant=-1,bEnpassant=-1; /* For enPassant*/
+
+bool wKingMoved=0,bKingMoved=0,wRightRookMoved=0,wLeftRookMoved=0,bRightRookMoved=0,bLeftRookMoved=0; /* For castle */
 
 string board[8][8];
 
@@ -38,7 +39,7 @@ void setUpChessBoard()
     board[7][4]="wKing";
 }
 
-void displayBoard() // Improve piece display
+void displayBoard() // Improve board display
 {
     for(int i=0;i<8;i++)
     {
@@ -79,7 +80,7 @@ void displayBoard() // Improve piece display
     cout<<"\n\n";
 }
 
-void makeMove(string s1,string s2,bool currentMove, string presentBoard[][8],bool real) // En passant edge case, Castle edge case, promotion is auto queen
+void makeMove(string s1,string s2,bool currentMove, string presentBoard[][8],bool real) // Castle edge case, Promotion is auto queen
 {
     pair<int,int> prev,next;
 
@@ -116,6 +117,10 @@ void makeMove(string s1,string s2,bool currentMove, string presentBoard[][8],boo
         bEnpassant=next.second;
     else if(real)
         bEnpassant=-1;
+
+    // Castle
+
+    // Next move castle possible
 }
 
 bool checkBetween(pair<int,int> prev,pair<int,int> next, string presentBoard[][8])
@@ -310,14 +315,14 @@ bool checkDiscoveredCheck(bool currentMove , pair<int,int> prev , pair<int,int> 
     return 0;
 }
 
-void possibleMoves3(bool currentMove,pair<int,int> prev,pair<int,int> next) // En passant,castle move
+void possibleMoves3(bool currentMove,pair<int,int> prev,pair<int,int> next)
 {
     if(checkHorizontal(prev,next,board)||checkVertical(prev,next,board)||checkDiagonal(prev,next,board)||checkKnight(prev,next,board))
         if(checkDiscoveredCheck( currentMove , prev , next) == 0)
             addPossibleMove(prev,next);
 }
 
-void possibleMoves2(char type,bool currentMove,pair<int,int> prev)
+void possibleMoves2(char type,bool currentMove,pair<int,int> prev) 
 {
     for(int i=0;i<8;i++)
     {
@@ -331,7 +336,7 @@ void possibleMoves2(char type,bool currentMove,pair<int,int> prev)
     }
 }
 
-void possibleMoves(bool currentMove)
+void possibleMoves(bool currentMove) // Castle
 {
     char type = (currentMove ? 'b' : 'w');
 
@@ -345,6 +350,10 @@ void possibleMoves(bool currentMove)
             }
         }
     }
+
+    // Short Side Castle
+
+
 }
 
 bool checkValidMove(string s1,string s2)
@@ -372,9 +381,9 @@ void gameEndMessage(bool currentMove)
     else if(checkKing(0,board)==0 && checkKing(1,board)==0 && pos.size()==0)
         cout<<"Draw by stalemate";
     else if(checkKing(0,board))
-        cout<<"White won";
-    else if(checkKing(1,board))
         cout<<"Black won";
+    else if(checkKing(1,board))
+        cout<<"White won";
     else
         cout<<"ERROR";
 }
