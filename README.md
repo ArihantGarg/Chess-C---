@@ -21,4 +21,13 @@ This repository contains a simple command-line based chess program implemented i
 2. Open a terminal or command prompt in the repository directory.
 3. Compile the C++ source code using your preferred C++ compiler (e.g., g++).
 
+## Requirements
 
+- C++ Compiler (e.g., g++)
+- Unicode support for proper display of chess pieces
+
+## Future Improvements
+
+- Implement more advanced chess features, such as chess notation (PGN) parsing and saving games.
+- Add an AI engine for single-player mode against the computer.
+- Enhance the user interface with a graphical chessboard.
